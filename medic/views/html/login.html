@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="loginPage">
+<head>
+    <meta charset="utf-8">
+    <title>Sign Up | Log In</title>
+    <link rel="stylesheet" href="../css/log.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body id="loginBody">
+<div class="wrapper" id="wrapper">
+    <div class="title-text" id="titleText">
+        <div class="title login" id="loginTitle">Account</div>
+        <div class="title signup" id="signupTitle">Account</div>
+    </div>
+    <div class="form-container" id="formContainer">
+        <div class="slide-controls" id="slideControls">
+            <input type="radio" name="slide" id="login" checked>
+            <input type="radio" name="slide" id="signup">
+            <label for="login" class="slide login">Login</label>
+            <label for="signup" class="slide signup">SignUp</label>
+            <div class="slider-tab" id="sliderTab"></div>
+        </div>
+        <div class="form-inner" id="formInner">
+<!-- Login Form -->
+<form action="http://localhost:3000/login" method="post">
+    <div class="field">
+        <input type="text" name="email" placeholder="Email Address" required>
+    </div>
+    <div class="field">
+        <input type="password" name="password" placeholder="Password" required>
+    </div>
+    <div class="pass-link" id="resetPassword">
+        <a href="#">Reset password?</a>
+    </div>
+    <div class="field btn">
+        <div class="btn-layer"></div>
+        <input type="submit" value="Login">
+    </div>
+    <div class="signup-link">
+        Don't Have Account? <a href="#" id="createNewAccount">Create A New</a>
+    </div>
+</form>
+
+            <!-- Role Selection -->
+<!-- Role Selection with Heading -->
+<div class="role-selection" id="roleSelection" style="display:none;">
+    <div class="role-buttons">
+        <button type="button" id="patientBtn">Patient</button>
+        <button type="button" id="doctorBtn">Doctor</button>
+    </div>
+</div>
+
+
+            <!-- Patient SignUp Form -->
+            <form action="http://localhost:3000/signup" method="POST" class="signup-form" id="patientForm" style="display: none;">
+                <input type="hidden" name="userType" value="patient">
+                <div class="field">
+                    <input type="text" name="username" placeholder="Username" required>
+                </div>
+                <div class="field">
+                    <input type="text" name="firstname" placeholder="First Name" required>
+                </div>
+                <div class="field">
+                    <input type="text" name="lastname" placeholder="Last Name" required>
+                </div>
+                <div class="field">
+                    <input type="email" name="email" placeholder="Email Address" required>
+                </div>
+                <div class="field">
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="field">
+                    <input type="text" name="contact" placeholder="Contact Number" required>
+                </div>
+                <div class="field btn">
+                    <div class="btn-layer"></div>
+                    <input type="submit" value="SignUp">
+                </div>
+            </form>
+            <!-- Doctor SignUp Form -->
+            <form action="http://localhost:3000/signup" method="POST" class="signup-form" id="doctorForm" style="display: none;">
+                <input type="hidden" name="userType" value="doctor">
+
+                <div class="field">
+                    <input type="text" name="username" placeholder="Username" required>
+                </div>
+                <div class="field">
+                    <input type="text" name="firstname" placeholder="First Name" required>
+                </div>
+                <div class="field">
+                    <input type="text" name="lastname" placeholder="Last Name" required>
+                </div>
+                <div class="field">
+                    <input type="email" name="email" placeholder="Email Address" required>
+                </div>
+                <div class="field">
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="field">
+                    <input type="text" name="contact" placeholder="Contact Number" required>
+                </div>
+                <div class="field">
+                    <input type="text" name="specialty" placeholder="Specialty" required>
+                </div>
+                <div class="field">
+                    <input type="text" name="qualifications" placeholder="Qualifications" required>
+                </div>
+                <div class="field btn">
+                    <div class="btn-layer"></div>
+                    <input type="submit" value="SignUp">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="../js/log.js"></script>
+<!-- Add this script at the end of your HTML body -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const patientForm = document.getElementById("patientForm");
+        const doctorForm = document.getElementById("doctorForm");
+
+        // Function to send verification code via email
+        async function sendVerificationCode(email) {
+            try {
+                const response = await fetch('http://localhost:3000/send-verification-code', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    alert(data.message);
+                } else {
+                    alert("Failed to send verification code: " + data.message);
+                }
+            } catch (error) {
+                console.error("Error sending verification code:", error);
+                alert("An error occurred while sending the verification code.");
+            }
+        }
+
+        // Function to handle form submission
+        async function handleFormSubmit(event, form) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const formObj = Object.fromEntries(formData.entries());
+            const { email } = formObj;
+
+            // Send verification code
+            await sendVerificationCode(email);
+
+            // Show verification code input field
+            const verificationCode = prompt("Please enter the verification code sent to your email:");
+            if (!verificationCode) {
+                alert("Verification code is required.");
+                return;
+            }
+
+            // Add verification code to form data
+            formObj.verificationCode = verificationCode;
+
+            try {
+                // Send signup request
+                const response = await fetch('http://localhost:3000/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formObj)
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    alert(data.message);
+                    // You can redirect the user or perform any other action here
+                } else {
+                    alert("Signup failed: " + data.message);
+                }
+            } catch (error) {
+                console.error("Error during signup:", error);
+                alert("An error occurred during signup.");
+            }
+        }
+
+        // Add event listeners to forms
+        patientForm.addEventListener("submit", (event) => handleFormSubmit(event, patientForm));
+        doctorForm.addEventListener("submit", (event) => handleFormSubmit(event, doctorForm));
+    });
+
+
+
+    ///pass reset
+
+    // Function to initiate the password reset process
+async function initiatePasswordReset() {
+    const email = prompt("Please enter your email to reset the password:");
+    if (!email) {
+        alert("Email is required for password reset.");
+        return;
+    }
+
+    try {
+       
+        const response = await fetch('http://localhost:3000/reset-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email })
+        });
+        const data = await response.json();
+        if (response.ok) {
+            alert(data.message); 
+            
+            const verificationCode = prompt("Please enter the verification code sent to your email:");
+            if (!verificationCode) {
+                alert("Verification code is required.");
+                return;
+            }
+           
+            const newPassword = prompt("Please enter your new password:");
+            if (!newPassword) {
+                alert("New password is required.");
+                return;
+            }
+           
+            const updateResponse = await fetch('http://localhost:3000/reset-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, verificationCode, newPassword })
+            });
+            const updateData = await updateResponse.json();
+            if (updateResponse.ok) {
+                alert(updateData.message); 
+            } else {
+                alert("Failed to reset password: " + updateData.message);
+            }
+        } else {
+            alert("Failed to initiate password reset: " + data.message);
+        }
+    } catch (error) {
+        console.error("Error initiating password reset:", error);
+        alert("An error occurred while initiating password reset.");
+    }
+}
+
+document.getElementById("resetPassword").addEventListener("click", initiatePasswordReset);
+
+</script>
+
+</body>
+</html>

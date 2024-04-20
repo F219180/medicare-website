@@ -41,7 +41,7 @@ async function sendVerificationCode(email) {
         secure: false,
         auth: {
             user: 'f219212@cfd.nu.edu.pk', // Your email address
-            pass: '4434KALyar4434' // Your email password or app password
+            pass: 'assy thori na hota ha beta g' // Your email password or app password
         },
         tls: {
             rejectUnauthorized: false // Accept self-signed certificates

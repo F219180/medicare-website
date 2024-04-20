@@ -40,7 +40,7 @@ async function sendVerificationCode(email) {
         port: 587,
         secure: false,
         auth: {
-            user: 'email', // Your email address
+            user: 'enter your email', // Your email address
             pass: 'assy thori na hota ha beta g' // Your email password or app password
         },
         tls: {

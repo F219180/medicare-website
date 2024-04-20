@@ -40,7 +40,7 @@ async function sendVerificationCode(email) {
         port: 587,
         secure: false,
         auth: {
-            user: 'f219212@cfd.nu.edu.pk', // Your email address
+            user: 'email', // Your email address
             pass: 'assy thori na hota ha beta g' // Your email password or app password
         },
         tls: {
@@ -49,7 +49,7 @@ async function sendVerificationCode(email) {
     });
 
     const mailOptions = {
-        from: 'f219212@cfd.nu.edu.pk',
+        from: 'same email as above',
         to: email,
         subject: 'Verification Code',
         text: `Your verification code : ${code}`

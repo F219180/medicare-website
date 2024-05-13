@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .username {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Patient Dashboard</h1>
+        <div class="username" class="email">
+            <% if (username) { %>
+                Welcome, <%= username %>!
+            <% } else { %>
+                No username found.
+            <% } %>
+            <% if (email) { %>
+                Welcome, <%= email %>!
+            <% } else { %>
+                No email found.
+            <% } %>
+        </div>
+    </div>
+
+    <script>
+        
+        console.log("Patient dashboard loaded.");
+    </script>
+</body>
+</html>

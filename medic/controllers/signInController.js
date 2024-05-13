@@ -29,7 +29,27 @@ exports.signInPage = async (req, res) => {
         // console.log(result);
         const isMatch = await bcrypt.compare(password, user.password);
         if (isMatch) {
-            res.status(200).send({ message: `Login successful! Found in ${collectionName}.` });
+
+           
+            if (collectionName=="patient")
+                {
+                    username= await user1.findUsername(db,collectionName,email);
+                    console.log(username);
+                    res.render('patient.ejs', { username: username,email:email });
+                }
+            else  if(collectionName=="doctors")
+                {
+
+                    username= await user1.findUsername(db,collectionName,email);
+                    console.log(username);
+                    res.render('doctor.ejs', { username: username,email:email });
+
+                    //dactr wala rhta abiiii
+        
+                }
+         //   res.status(200).send({ message: `Login successful! Found in ${collectionName}.` });
+            
+
         } else {
             res.status(401).send({ message: "Incorrect password." });
         }

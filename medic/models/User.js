@@ -5,8 +5,7 @@ class User {
 
     async connectDb() {
         try {
-            const mongoUrl = '';
-         const dbName = '';
+           
 
             const client = new MongoClient(mongoUrl);
 
@@ -27,6 +26,21 @@ class User {
         }
         return null;
     }
+
+    async  findUsername(db, collectionName, email) {
+        try {
+            const user = await db.collection(collectionName).findOne({ email: email });
+            if (user) {
+                return user.username;
+            } else {
+                return null; 
+            }
+        } catch (error) {
+            console.error("Error finding username:", error);
+            throw error;
+        }
+    }
+    
 }
 
 module.exports = User;

@@ -53,7 +53,7 @@ exports.signUpPage = async (req, res) => {
         }
     }
     else{
-        res.status(401).send({ message: "Email Already Used" });
+        res.status(401).send({ message: "This Email is Already in Use" });
 
     }
 };

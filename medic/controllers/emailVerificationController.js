@@ -23,7 +23,7 @@ async function sendVerificationCode(email) {
     });
 
     const mailOptions = {
-        from: 'k',
+        from: '',
         to: email,
         subject: 'Verification Code',
         text: `Your verification code : ${code}`

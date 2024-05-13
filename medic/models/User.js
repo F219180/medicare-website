@@ -6,7 +6,8 @@ class User {
     async connectDb() {
         try {
             const mongoUrl = '';
-            const dbName = '';
+         const dbName = '';
+
             const client = new MongoClient(mongoUrl);
 
             await client.connect();

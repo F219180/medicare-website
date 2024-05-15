@@ -5,8 +5,9 @@ class User {
 
     async connectDb() {
         try {
-            const mongoUrl = '';
-         const dbName = '';
+            const mongoUrl ='';
+                   
+         const dbName = 'medic';
 
             const client = new MongoClient(mongoUrl);
 
@@ -56,7 +57,37 @@ class User {
         }
     }
     
-    
+    //ISKO COPY KRNA SOHAIBBB
+    async findUserEmail(db, email) {
+        try {
+            const user = await db.collection('admin').findOne({ email: email });
+            if (user) {
+                return user;
+            } else {
+                return null;
+            }
+        } catch (error) {
+            console.error("Error finding admin email:", error);
+            throw error;
+        }
+    }
+
+    async findAllData(db) {
+        const collections = ['patient', 'doctors', 'admin'];
+        const allData = {};
+        try {
+            for (let collectionName of collections) {
+                const collectionData = await db.collection(collectionName).find({}).toArray();
+                allData[collectionName] = collectionData;
+            }
+            return allData;
+        } catch (error) {
+            console.error("Error fetching data from all collections:", error);
+            throw error;
+        }
+    }
+
+    ///YAHHAN TKKK 
 }
 
 module.exports = User;

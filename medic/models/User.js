@@ -5,7 +5,7 @@ class User {
 
     async connectDb() {
         try {
-            const mongoUrl ='mongodb+srv://syedaFatima:1234@cluster0.wlkeuw7.mongodb.net/';
+            const mongoUrl ='';
                    
          const dbName = 'medic';
 
@@ -88,34 +88,6 @@ class User {
     }
 
     ///YAHHAN TKKK 
-}
-
-function confirmDelete(collectionName, id) {
-    if (confirm('Are you sure you want to delete this document?')) {
-        deleteDocument(collectionName, id);
-    }
-}
-
-function deleteDocument(collectionName, id) {
-    fetch('/admin/delete', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ collectionName, id })
-    })
-    .then(response => {
-        if (response.ok) {
-            // Remove the deleted row from the table
-            document.getElementById(id).remove();
-        } else {
-            alert('Error deleting document. Please try again.');
-        }
-    })
-    .catch(error => {
-        console.error('Error deleting document:', error);
-        alert('An error occurred. Please try again later.');
-    });
 }
 
 module.exports = User;

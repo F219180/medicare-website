@@ -47,6 +47,17 @@ exports.signInPage = async (req, res) => {
                     
         
                 }
+
+                //AIK ISKO COPY PASTE KRNA SHAREEF SOHAIB
+                else  if(collectionName=="admin")
+                {
+
+                        const adminUser = await user1.findUserEmail(db, email);
+                        const allData = await user1.findAllData(db);
+                        res.render('admin.ejs', { adminUser, allData });
+                }
+                //YAHAN TKKKKKK
+
          //   res.status(200).send({ message: `Login successful! Found in ${collectionName}.` });
             
 

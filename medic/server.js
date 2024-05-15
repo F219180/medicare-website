@@ -16,6 +16,7 @@ const signUpController = require('./controllers/signUpController');
 const resetPasswordController = require('./controllers/resetPasswordController');
 const emailVerificationController = require('./controllers/emailVerificationController');
 
+const adminController = require('./controllers/adminController');
 
 const cors = require('cors');
 
@@ -42,7 +43,6 @@ app.post('/reset-password', resetPasswordController.resetPasswordPage);
 
 
 app.use(express.urlencoded({ extended: true }));
-
 // GET route to serve the HTML file
 app.get('/schedule-meet', (req, res) => {
     res.sendFile(__dirname + '/schedule.html');
@@ -50,6 +50,11 @@ app.get('/schedule-meet', (req, res) => {
 
 // POST route to handle scheduling the meeting
 app.post('/schedule-meet', scheduleMeet);
+
+
+//For admin crud operations....yeh bhi add krna ...upr sai require wla code bhi
+app.get('/admin', adminController.getAdminDashboard);
+app.post('/admin/delete', adminController.deleteDocument);
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);

@@ -8,7 +8,7 @@ const randomstring = require('randomstring');
 const fs = require('fs');
 const { OAuth2Client } = require('google-auth-library');
 const { scheduleMeet } = require('./controllers/meet');
-
+const adminController = require('./controllers/adminController');
 
 
 const signInController = require('./controllers/signInController');
@@ -50,6 +50,13 @@ app.get('/schedule-meet', (req, res) => {
 
 // POST route to handle scheduling the meeting
 app.post('/schedule-meet', scheduleMeet);
+
+
+// yeh aur requiree
+app.get('/admin', adminController.getAdminDashboard);
+app.post('/admin/delete', adminController.deleteDocument);
+
+
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);

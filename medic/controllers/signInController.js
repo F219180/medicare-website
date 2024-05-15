@@ -52,6 +52,29 @@ exports.signInPage = async (req, res) => {
             }
             //   res.status(200).send({ message: `Login successful! Found in ${collectionName}.` });
 
+<<<<<<< HEAD
+=======
+                    username= await user1.findUsername(db,collectionName,email);
+                    specialty= await user1.findUserSpecialization(db,collectionName,email);
+                    console.log(username);
+                    res.render('doctor.ejs', { username: username,email:email,specialty:specialty });
+                    
+        
+                }
+
+                //AIK ISKO COPY PASTE KRNA SHAREEF SOHAIB
+                else  if(collectionName=="admin")
+                {
+
+                        const adminUser = await user1.findUserEmail(db, email);
+                        const allData = await user1.findAllData(db);
+                        res.render('admin.ejs', { adminUser, allData });
+                }
+                //YAHAN TKKKKKK
+
+         //   res.status(200).send({ message: `Login successful! Found in ${collectionName}.` });
+            
+>>>>>>> 31644e2a9ff036a47f57ed931cb4fd80856890e6
 
         } else {
             res.status(401).send({ message: "Incorrect password." });

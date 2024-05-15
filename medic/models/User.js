@@ -5,8 +5,9 @@ class User {
 
     async connectDb() {
         try {
-            const mongoUrl = '';
-         const dbName = '';
+            const mongoUrl ='';
+                   
+         const dbName = 'medic';
 
             const client = new MongoClient(mongoUrl);
 
@@ -56,6 +57,7 @@ class User {
         }
     }
     
+<<<<<<< HEAD
     async  findAlldoctersFreeSlot(db, collectionName) {
         try {
             const alldocFreeslotObj = await db.collection(collectionName).find().toArray();
@@ -66,10 +68,24 @@ class User {
             }
         } catch (error) {
             console.error("Error finding alldocFreeslot:", error);
+=======
+    //ISKO COPY KRNA SOHAIBBB
+    async findUserEmail(db, email) {
+        try {
+            const user = await db.collection('admin').findOne({ email: email });
+            if (user) {
+                return user;
+            } else {
+                return null;
+            }
+        } catch (error) {
+            console.error("Error finding admin email:", error);
+>>>>>>> 31644e2a9ff036a47f57ed931cb4fd80856890e6
             throw error;
         }
     }
 
+<<<<<<< HEAD
     async  FindUpcomingMeetingsForP(db, collectionName,email) {
         try {
             const allMeetingObj = await db.collection(collectionName).find({patinetEmail:email}).toArray();
@@ -80,10 +96,24 @@ class User {
             }
         } catch (error) {
             console.error("Error finding Upcomingmeetings:", error);
+=======
+    async findAllData(db) {
+        const collections = ['patient', 'doctors', 'admin'];
+        const allData = {};
+        try {
+            for (let collectionName of collections) {
+                const collectionData = await db.collection(collectionName).find({}).toArray();
+                allData[collectionName] = collectionData;
+            }
+            return allData;
+        } catch (error) {
+            console.error("Error fetching data from all collections:", error);
+>>>>>>> 31644e2a9ff036a47f57ed931cb4fd80856890e6
             throw error;
         }
     }
 
+<<<<<<< HEAD
     async  FindUpcomingMeetingsForD(db, collectionName,email) {
         try {
             const allMeetingObj = await db.collection(collectionName).find({doctorEmail:email}).toArray();
@@ -132,6 +162,10 @@ async findAllData(db) {
 
 
 
+=======
+    ///YAHHAN TKKK 
+>>>>>>> 31644e2a9ff036a47f57ed931cb4fd80856890e6
 }
+
 
 module.exports = User;

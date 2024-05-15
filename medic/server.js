@@ -8,7 +8,7 @@ const randomstring = require('randomstring');
 const fs = require('fs');
 const { OAuth2Client } = require('google-auth-library');
 const { scheduleMeet } = require('./controllers/meet');
-
+const adminController = require('./controllers/adminController');
 
 
 const signInController = require('./controllers/signInController');

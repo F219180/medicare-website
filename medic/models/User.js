@@ -5,7 +5,8 @@ class User {
 
     async connectDb() {
         try {
-           
+            const mongoUrl = '';
+         const dbName = '';
 
             const client = new MongoClient(mongoUrl);
 
@@ -40,6 +41,21 @@ class User {
             throw error;
         }
     }
+
+    async  findUserSpecialization(db, collectionName, email) {
+        try {
+            const user = await db.collection(collectionName).findOne({ email: email });
+            if (user) {
+                return user.specialty;
+            } else {
+                return null; 
+            }
+        } catch (error) {
+            console.error("Error finding Specialization:", error);
+            throw error;
+        }
+    }
+    
     
 }
 

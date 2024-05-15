@@ -33,7 +33,7 @@
 <body>
     <div class="container">
         <h1>Doctor Dashboard</h1>
-        <div class="username" class="email">
+        <div class="username" class="email" class="specialty">
             <% if (username) { %>
                 Welcome, <%= username %>!
             <% } else { %>
@@ -44,10 +44,20 @@
             <% } else { %>
                 No email found.
             <% } %>
+            <% if (specialty) { %>
+                Welcome, <%= specialty %>!
+            <% } else { %>
+                No specialty found.
+            <% } %>
         </div>
        
     </div>
-
+    <h1>Schedule Meeting for Patient In Free Slots</h1>
+    <form action="/schedule-meet" method="post">
+        <label for="datetime">Select Date and Time (Pakistan Time Zone):</label><br>
+        <input type="datetime-local" id="datetime" name="datetime" required><br><br>
+        <button type="submit">Schedule Event</button>
+    </form>
     <script>
         
         console.log("Doctor dashboard loaded.");

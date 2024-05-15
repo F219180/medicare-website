@@ -14,7 +14,8 @@ async function sendVerificationCode(email) {
         port: 587,
         secure: false,
         auth: {
-             // Your email password or app password
+            user: '', // Your email address
+            pass: '' // Your email password or app password
         },
         tls: {
             rejectUnauthorized: false // Accept self-signed certificates
@@ -22,7 +23,7 @@ async function sendVerificationCode(email) {
     });
 
     const mailOptions = {
-      
+        from: '',
         to: email,
         subject: 'Verification Code',
         text: `Your verification code : ${code}`

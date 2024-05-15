@@ -10,9 +10,11 @@ exports.signUpPage = async (req, res) => {
         res.status(500).send("Failed to connect to the database.");
         return;
     }
+    
     email=req.body.email;
     const result = await user.findUserInCollections(db, email);
     console.log(result)
+
     if (!(result)) {
 
 

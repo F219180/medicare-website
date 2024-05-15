@@ -5,6 +5,12 @@ const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const randomstring = require('randomstring');
 
+const fs = require('fs');
+const { OAuth2Client } = require('google-auth-library');
+const { scheduleMeet } = require('./controllers/meet');
+
+
+
 const signInController = require('./controllers/signInController');
 const signUpController = require('./controllers/signUpController');
 const resetPasswordController = require('./controllers/resetPasswordController');
@@ -34,9 +40,16 @@ app.post('/login', signInController.signInPage);
 
 app.post('/reset-password', resetPasswordController.resetPasswordPage);
 
-// app.get('/login', signInController.signIn);
 
-// app.get('/', landingPageController.landingPage);
+app.use(express.urlencoded({ extended: true }));
+
+// GET route to serve the HTML file
+app.get('/schedule-meet', (req, res) => {
+    res.sendFile(__dirname + '/schedule.html');
+});
+
+// POST route to handle scheduling the meeting
+app.post('/schedule-meet', scheduleMeet);
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);

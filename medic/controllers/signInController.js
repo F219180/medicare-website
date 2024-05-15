@@ -1,5 +1,4 @@
 
-
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -34,6 +33,7 @@ exports.signInPage = async (req, res) => {
             if (collectionName=="patient")
                 {
                     username= await user1.findUsername(db,collectionName,email);
+
                     console.log(username);
                     res.render('patient.ejs', { username: username,email:email });
                 }
@@ -41,10 +41,10 @@ exports.signInPage = async (req, res) => {
                 {
 
                     username= await user1.findUsername(db,collectionName,email);
+                    specialty= await user1.findUserSpecialization(db,collectionName,email);
                     console.log(username);
-                    res.render('doctor.ejs', { username: username,email:email });
-
-                    //dactr wala rhta abiiii
+                    res.render('doctor.ejs', { username: username,email:email,specialty:specialty });
+                    
         
                 }
          //   res.status(200).send({ message: `Login successful! Found in ${collectionName}.` });

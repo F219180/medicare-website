@@ -29,26 +29,29 @@ exports.signInPage = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (isMatch) {
 
-           
-            if (collectionName=="patient")
-                {
-                    username= await user1.findUsername(db,collectionName,email);
 
-                    console.log(username);
-                    res.render('patient.ejs', { username: username,email:email });
-                }
-            else  if(collectionName=="doctors")
-                {
+            if (collectionName == "patient") {
+                username = await user1.findUsername(db, collectionName, email);
+                allmeets = await user1.findAlldoctersFreeSlot(db, "DocterMeetingSlots");
+                upcomingMeetings = await user1.FindUpcomingMeetingsForP(db, "DocterPatinetMeet", email);
+                res.render('patient.ejs', { username: username, email: email, allmeets: allmeets, upcomingMeetings: upcomingMeetings });
+            }
+            else if (collectionName == "doctors") {
 
-                    username= await user1.findUsername(db,collectionName,email);
-                    specialty= await user1.findUserSpecialization(db,collectionName,email);
-                    console.log(username);
-                    res.render('doctor.ejs', { username: username,email:email,specialty:specialty });
-                    
-        
-                }
-         //   res.status(200).send({ message: `Login successful! Found in ${collectionName}.` });
-            
+                username = await user1.findUsername(db, collectionName, email);
+                specialty = await user1.findUserSpecialization(db, collectionName, email);
+                upcomingMeetings = await user1.FindUpcomingMeetingsForD(db, "DocterPatinetMeet", email);
+                res.render('doctor.ejs', { username: username, email: email, specialty: specialty, upcomingMeetings: upcomingMeetings });
+
+            }
+            else if (collectionName == "admin") {
+
+                const adminUser = await user1.findUserEmail(db, email);
+                const allData = await user1.findAllData(db);
+                res.render('admin.ejs', { adminUser, allData });
+            }
+            //   res.status(200).send({ message: `Login successful! Found in ${collectionName}.` });
+
 
         } else {
             res.status(401).send({ message: "Incorrect password." });

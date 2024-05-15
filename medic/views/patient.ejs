@@ -28,6 +28,25 @@
             font-size: 20px;
             margin-bottom: 20px;
         }
+
+
+
+
+        .meeting-card {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+        background-color: #f9f9f9;
+    }
+    .meeting-details {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+    }
+    .label {
+        font-weight: bold;
+    }
     </style>
 </head>
 <body>
@@ -46,7 +65,87 @@
             <% } %>
         </div>
     </div>
+    <h1>Arrange Meeting with Doctor Of your Choice </h1>
     
+    <form action="/StoreMeetingInPaitentMeetingTable" method="post" class="allmeets">
+        <% if (allmeets && allmeets.length > 0) { %>
+            <div>
+                <% for (let i = 0; i < allmeets.length; i++) { %>
+                    <div class="meeting-card">
+                        <input type="radio" name="selectedMeeting" value="<%= i %>" required>
+                        <div class="meeting-details">
+                            <span class="label">Username:</span>
+                            <span><%= allmeets[i].username %></span>
+                        </div>
+                        <div class="meeting-details">
+                            <span class="label">Specialty:</span>
+                            <span><%= allmeets[i].specialty %></span>
+                        </div>
+                        <div class="meeting-details">
+                            <span class="label">Email:</span>
+                            <span><%= allmeets[i].email %></span>
+                        </div>
+                        <div class="meeting-details">
+                            <span class="label">Date & Time:</span>
+                            <span><%= allmeets[i].dateTime %></span>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        
+            <!-- Input fields to store patient's email and username -->
+            <input type="hidden" id="email" name="email" value="<%= email %>">
+            <input type="hidden" id="username" name="username" value="<%= username %>">
+        
+            <button type="submit">Submit</button>
+        <% } else { %>
+            <h1>Currently there are no meetings available.</h1>
+        <% } %>
+        
+
+    </form>
+    
+
+
+    <h1>Your Scheduled Meetings </h1>
+    <form>
+        <% if (upcomingMeetings && upcomingMeetings.length > 0) { %>
+            <div>
+                <% for (let i = 0; i < upcomingMeetings.length; i++) { %>
+                    <div class="meeting-card">
+                        <div class="meeting-details">
+                            <span class="label">Doctor Name:</span>
+                            <span><%= upcomingMeetings[i].userNameOfDoctor %></span>
+                        </div>
+                        <div class="meeting-details">
+                            <span class="label">Specialty:</span>
+                            <span><%= upcomingMeetings[i].specialty %></span>
+                        </div>
+                        <div class="meeting-details">
+                            <span class="label">Email:</span>
+                            <span><%= upcomingMeetings[i].doctorEmail %></span>
+                        </div>
+                        <div class="meeting-details">
+                            <span class="label">Date & Time:</span>
+                            <span><%= upcomingMeetings[i].dateTime %></span>
+                        </div>
+                        <div class="meeting-details">
+                            <span class="label">Meeting Link:</span>
+                            <span class="label">Meeting Link:</span>
+                            <a href="<%= upcomingMeetings[i].meetingLink %>"><%= upcomingMeetings[i].meetingLink %></a>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        <% } else { %>
+            <h1>Currently there are no meetings Scheduled.</h1>
+        <% } %>
+    </form>
+    
+
+
+
+
     <script>
         
         console.log("Patient dashboard loaded.");

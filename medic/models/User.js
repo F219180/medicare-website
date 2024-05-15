@@ -56,7 +56,82 @@ class User {
         }
     }
     
-    
+    async  findAlldoctersFreeSlot(db, collectionName) {
+        try {
+            const alldocFreeslotObj = await db.collection(collectionName).find().toArray();
+            if (alldocFreeslotObj) {
+                return alldocFreeslotObj;
+            } else {
+                return null; 
+            }
+        } catch (error) {
+            console.error("Error finding alldocFreeslot:", error);
+            throw error;
+        }
+    }
+
+    async  FindUpcomingMeetingsForP(db, collectionName,email) {
+        try {
+            const allMeetingObj = await db.collection(collectionName).find({patinetEmail:email}).toArray();
+            if (allMeetingObj.length>0) {
+                return allMeetingObj;
+            } else {
+                return null; 
+            }
+        } catch (error) {
+            console.error("Error finding Upcomingmeetings:", error);
+            throw error;
+        }
+    }
+
+    async  FindUpcomingMeetingsForD(db, collectionName,email) {
+        try {
+            const allMeetingObj = await db.collection(collectionName).find({doctorEmail:email}).toArray();
+            if (allMeetingObj.length>0) {
+                return allMeetingObj;
+            } else {
+                return null; 
+            }
+        } catch (error) {
+            console.error("Error finding Upcomingmeetings:", error);
+            throw error;
+        }
+    }
+
+//ISKO COPY KRNA SOHAIBBB
+async findUserEmail(db, email) {
+    try {
+        const user = await db.collection('admin').findOne({ email: email });
+        if (user) {
+            return user;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error("Error finding admin email:", error);
+        throw error;
+    }
+}
+
+async findAllData(db) {
+    const collections = ['patient', 'doctors', 'admin'];
+    const allData = {};
+    try {
+        for (let collectionName of collections) {
+            const collectionData = await db.collection(collectionName).find({}).toArray();
+            allData[collectionName] = collectionData;
+        }
+        return allData;
+    } catch (error) {
+        console.error("Error fetching data from all collections:", error);
+        throw error;
+    }
+}
+
+///YAHHAN TKKK 
+
+
+
 }
 
 module.exports = User;

@@ -1,6 +1,7 @@
 const { google } = require('googleapis');
 const fs = require('fs');
 const { OAuth2Client } = require('google-auth-library');
+const User = require('../models/User');
 
 const timeZone = 'Asia/Karachi'; // Pakistan time zone
 
@@ -66,10 +67,17 @@ function scheduleEvent(auth, dateTime, callback) {
         }
     );
 }
-
-function scheduleMeet(req, res) {
+let linkformeet
+async function scheduleMeet(req, res) {
     const dateTimeString = req.body.datetime;
-    const dateTime = new Date(dateTimeString); // Parse date string into a Date object
+    const dateTime = new Date(dateTimeString);
+    const username = req.body.username;
+    const email = req.body.email;
+    const specialty = req.body.specialty;
+    let err1 = 1;
+
+    const user = new User();
+    const db = await user.connectDb();
     if (isNaN(dateTime.getTime())) {
         // Invalid date string
         return res.status(400).send('Invalid date and time format');
@@ -85,15 +93,25 @@ function scheduleMeet(req, res) {
         oAuth2Client.setCredentials(JSON.parse(token));
         scheduleEvent(oAuth2Client, dateTime, (err, meetingLink) => {
             if (err) {
+                err1 = err
                 console.error('Error scheduling event:', err);
                 res.status(500).send('Error scheduling event');
             } else {
+                linkformeet = meetingLink;
+                 db.collection("DocterMeetingSlots").insertOne({
+                    username: username, email: email, specialty: specialty, meetingLink: meetingLink, dateTime: dateTime
+                });
+            
                 console.log('Event scheduled successfully:', meetingLink);
+
                 res.send(`<h2>Meeting Scheduled Successfully!</h2><p>Meeting Link: <a href="${meetingLink}" target="_blank">${meetingLink}</a></p>`);
-                
+
             }
         });
     });
+   
+       
+
 }
 
 module.exports = {

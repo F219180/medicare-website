@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,7 @@
             padding: 0;
             background-color: #f0f0f0;
         }
+
         .container {
             max-width: 800px;
             margin: 20px auto;
@@ -19,136 +21,297 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
         }
+
         h1 {
             text-align: center;
             margin-bottom: 20px;
         }
+
         .username {
             text-align: center;
             font-size: 20px;
             margin-bottom: 20px;
         }
 
-
-
-
         .meeting-card {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
-        margin-bottom: 10px;
-        background-color: #f9f9f9;
-    }
-    .meeting-details {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 5px;
-    }
-    .label {
-        font-weight: bold;
-    }
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .meeting-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Patient Dashboard</h1>
         <div class="username" class="email">
             <% if (username) { %>
                 Welcome, <%= username %>!
-            <% } else { %>
-                No username found.
-            <% } %>
-            <% if (email) { %>
-                Welcome, <%= email %>!
-            <% } else { %>
-                No email found.
-            <% } %>
+                    <% } else { %>
+                        No username found.
+                        <% } %>
+                            <% if (email) { %>
+                                Welcome, <%= email %>!
+                                    <% } else { %>
+                                        No email found.
+                                        <% } %>
         </div>
+        <button class="btn" id="addRecordBtn">Add your Previous Medical Record</button>
     </div>
     <h1>Arrange Meeting with Doctor Of your Choice </h1>
-    
+
     <form action="/StoreMeetingInPaitentMeetingTable" method="post" class="allmeets">
-        <% if (allmeets && allmeets.length > 0) { %>
+        <% if (allmeets && allmeets.length> 0) { %>
             <div>
-                <% for (let i = 0; i < allmeets.length; i++) { %>
+                <% for (let i=0; i < allmeets.length; i++) { %>
                     <div class="meeting-card">
                         <input type="radio" name="selectedMeeting" value="<%= i %>" required>
                         <div class="meeting-details">
                             <span class="label">Username:</span>
-                            <span><%= allmeets[i].username %></span>
+                            <span>
+                                <%= allmeets[i].username %>
+                            </span>
                         </div>
                         <div class="meeting-details">
                             <span class="label">Specialty:</span>
-                            <span><%= allmeets[i].specialty %></span>
+                            <span>
+                                <%= allmeets[i].specialty %>
+                            </span>
                         </div>
                         <div class="meeting-details">
                             <span class="label">Email:</span>
-                            <span><%= allmeets[i].email %></span>
+                            <span>
+                                <%= allmeets[i].email %>
+                            </span>
                         </div>
                         <div class="meeting-details">
                             <span class="label">Date & Time:</span>
-                            <span><%= allmeets[i].dateTime %></span>
+                            <span>
+                                <%= allmeets[i].dateTime %>
+                            </span>
                         </div>
                     </div>
-                <% } %>
+                    <% } %>
             </div>
-        
+
             <!-- Input fields to store patient's email and username -->
             <input type="hidden" id="email" name="email" value="<%= email %>">
             <input type="hidden" id="username" name="username" value="<%= username %>">
-        
+
             <button type="submit">Submit</button>
-        <% } else { %>
-            <h1>Currently there are no meetings available.</h1>
-        <% } %>
-        
-
+            <% } else { %>
+                <h1>Currently there are no meetings available.</h1>
+                <% } %>
     </form>
-    
-
 
     <h1>Your Scheduled Meetings </h1>
     <form>
-        <% if (upcomingMeetings && upcomingMeetings.length > 0) { %>
+        <% if (upcomingMeetings && upcomingMeetings.length> 0) { %>
             <div>
-                <% for (let i = 0; i < upcomingMeetings.length; i++) { %>
+                <% for (let i=0; i < upcomingMeetings.length; i++) { %>
                     <div class="meeting-card">
                         <div class="meeting-details">
                             <span class="label">Doctor Name:</span>
-                            <span><%= upcomingMeetings[i].userNameOfDoctor %></span>
+                            <span>
+                                <%= upcomingMeetings[i].userNameOfDoctor %>
+                            </span>
                         </div>
                         <div class="meeting-details">
                             <span class="label">Specialty:</span>
-                            <span><%= upcomingMeetings[i].specialty %></span>
+                            <span>
+                                <%= upcomingMeetings[i].specialty %>
+                            </span>
                         </div>
                         <div class="meeting-details">
                             <span class="label">Email:</span>
-                            <span><%= upcomingMeetings[i].doctorEmail %></span>
+                            <span>
+                                <%= upcomingMeetings[i].doctorEmail %>
+                            </span>
                         </div>
                         <div class="meeting-details">
                             <span class="label">Date & Time:</span>
-                            <span><%= upcomingMeetings[i].dateTime %></span>
+                            <span>
+                                <%= upcomingMeetings[i].dateTime %>
+                            </span>
                         </div>
                         <div class="meeting-details">
                             <span class="label">Meeting Link:</span>
-                            <span class="label">Meeting Link:</span>
-                            <a href="<%= upcomingMeetings[i].meetingLink %>"><%= upcomingMeetings[i].meetingLink %></a>
+                            <a href="<%= upcomingMeetings[i].meetingLink %>">
+                                <%= upcomingMeetings[i].meetingLink %>
+                            </a>
                         </div>
                     </div>
-                <% } %>
+                    <% } %>
             </div>
-        <% } else { %>
-            <h1>Currently there are no meetings Scheduled.</h1>
-        <% } %>
+            <% } else { %>
+                <h1>Currently there are no meetings Scheduled.</h1>
+                <% } %>
     </form>
-    
+    <h2>Prescriptions</h2>
+        <% if (prescriptions && prescriptions.length > 0) { %>
+            <% prescriptions.forEach(function(prescription) { %>
+                <div class="prescription-card">
+                    <div class="prescription-details">
+                        <span class="label">Doctor Signature:</span>
+                        <span><%= prescription.doctorSignature %></span>
+                    </div>
+                    <div class="prescription-details">
+                        <span class="label">Prescription:</span>
+                        <span><%= prescription.prescription %></span>
+                    </div>
+                    <div class="prescription-details">
+                        <span class="label">Date:</span>
+                        <span><%= new Date(prescription.date).toLocaleString() %></span>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No prescriptions found.</p>
+        <% } %>
 
+                        <!-- The Modal -->
+                        <div id="myModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                                <h2>Add Your Previous Medical Record</h2>
+                                <form id="recordForm">
+                                    <label for="recordEmail">Email:</label>
+                                    <input type="email" id="recordEmail" name="recordEmail" required><br><br>
+                                    <label for="bp">Blood Pressure:</label>
+                                    <input type="text" id="bp" name="bp" required><br><br>
+                                    <label for="description">Description:</label>
+                                    <textarea id="description" name="description" rows="4" required></textarea><br><br>
+                                    <button type="submit">Submit</button>
+                                </form>
+                            </div>
+                        </div>
 
+                        <script>
+                            // Get the modal
+                            var modal = document.getElementById("myModal");
 
+                            // Get the button that opens the modal
+                            var btn = document.getElementById("addRecordBtn");
 
-    <script>
-        
-        console.log("Patient dashboard loaded.");
-    </script>
+                            // Get the <span> element that closes the modal
+                            var span = document.getElementsByClassName("close")[0];
+
+                            // When the user clicks the button, open the modal 
+                            btn.onclick = function () {
+                                modal.style.display = "block";
+                            }
+
+                            // When the user clicks on <span> (x), close the modal
+                            span.onclick = function () {
+                                modal.style.display = "none";
+                            }
+
+                            // When the user clicks anywhere outside of the modal, close it
+                            window.onclick = function (event) {
+                                if (event.target == modal) {
+                                    modal.style.display = "none";
+                                }
+                            }
+
+                            // Handle form submission
+                            document.getElementById("recordForm").addEventListener("submit", function (event) {
+                                event.preventDefault();
+
+                                var recordEmail = document.getElementById("recordEmail").value;
+                                var bp = document.getElementById("bp").value;
+                                var description = document.getElementById("description").value;
+
+                                fetch('/addMedicalRecord', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        recordEmail: recordEmail,
+                                        bp: bp,
+                                        description: description
+                                    })
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            alert("Medical record added successfully.");
+                                            modal.style.display = "none";
+                                        } else {
+                                            alert("Error adding medical record: " + data.message);
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        alert("An error occurred while adding the medical record.");
+                                    });
+                            });
+                        </script>
 </body>
+
 </html>

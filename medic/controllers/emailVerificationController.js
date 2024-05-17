@@ -15,12 +15,14 @@ async function sendVerificationCode(email) {
         secure: false,
         auth: {
             user: '', // Your email address
-            pass: '' // Your email password or app password
+            pass: ''
         },
         tls: {
             rejectUnauthorized: false // Accept self-signed certificates
         }
     });
+
+
 
     const mailOptions = {
         from: '',

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,7 @@
             padding: 0;
             background-color: #f0f0f0;
         }
+
         .container {
             max-width: 800px;
             margin: 20px auto;
@@ -19,94 +21,247 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
         }
+
         h1 {
             text-align: center;
             margin-bottom: 20px;
         }
+
         .username {
             text-align: center;
             font-size: 20px;
             margin-bottom: 20px;
         }
+
+        .record-card,
+        .meeting-card {
+            background-color: #f9f9f9;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .record-details,
+        .meeting-details {
+            margin-bottom: 10px;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .actions {
+            text-align: right;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 60px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Doctor Dashboard</h1>
-        <div class="username" class="email" class="specialty">
+        <div class="username">
             <% if (username) { %>
                 Welcome, <%= username %>!
-            <% } else { %>
-                No username found.
-            <% } %>
-            <% if (email) { %>
-                Welcome, <%= email %>!
-            <% } else { %>
-                No email found.
-            <% } %>
-            <% if (specialty) { %>
-                Welcome, <%= specialty %>!
-            <% } else { %>
-                No specialty found.
-            <% } %>
+                    <% } else { %>
+                        No username found.
+                        <% } %>
+                            <% if (email) { %>
+                                <br>Email: <%= email %>
+                                    <% } else { %>
+                                        No email found.
+                                        <% } %>
+                                            <% if (specialty) { %>
+                                                <br>Specialty: <%= specialty %>
+                                                    <% } else { %>
+                                                        No specialty found.
+                                                        <% } %>
         </div>
-       
-    </div>
-    <h1>Schedule Meeting for Patient In Free Slots</h1>
-    <form action="/schedule-meet" method="post" class="schedule-form">
-        <label for="username">Hello, </label>
-        <span id="username"><%= username %>!</span><br><br>
-        
-        <input type="hidden" id="username" name="username" value="<%= username %>">
-        <input type="hidden" id="email" name="email" value="<%= email %>">
-        <input type="hidden" id="specialty" name="specialty" value="<%= specialty %>">
-        
+        <h1>Schedule Meeting for Patient In Free Slots</h1>
+        <form action="/schedule-meet" method="post" class="schedule-form">
+            <label for="username">Hello, </label>
+            <span id="username">
+                <%= username %>!
+            </span><br><br>
 
-        
-        <label for="datetime">Select Date and Time (Pakistan Time Zone):</label><br>
-        <input type="datetime-local" id="datetime" name="datetime" required><br><br>
-        
-        <button type="submit">Schedule Event</button>
-    </form>
-    
+            <input type="hidden" id="username" name="username" value="<%= username %>">
+            <input type="hidden" id="email" name="email" value="<%= email %>">
+            <input type="hidden" id="specialty" name="specialty" value="<%= specialty %>">
 
 
 
+            <label for="datetime">Select Date and Time (Pakistan Time Zone):</label><br>
+            <input type="datetime-local" id="datetime" name="datetime" required><br><br>
 
-    <form>
-        <% if (upcomingMeetings && upcomingMeetings.length > 0) { %>
-            <div>
-                <% for (let i = 0; i < upcomingMeetings.length; i++) { %>
-                    <div class="meeting-card">
-                        <div class="meeting-details">
-                            <span class="label">Patient Name:</span>
-                            <span><%= upcomingMeetings[i].userNameOfPatient %></span>
-                        </div>
-                        <div class="meeting-details">
-                            <span class="label">Email:</span>
-                            <span><%= upcomingMeetings[i].patinetEmail %></span>
-                        </div>
-                        <div class="meeting-details">
-                            <span class="label">Date & Time:</span>
-                            <span><%= upcomingMeetings[i].dateTime %></span>
-                        </div>
-                        <div class="meeting-details">
-                            <span class="label">Meeting Link:</span>
-                            <span class="label">Meeting Link:</span>
-                            <a href="<%= upcomingMeetings[i].meetingLink %>"><%= upcomingMeetings[i].meetingLink %></a>
-                        </div>
+            <button type="submit">Schedule Event</button>
+        </form>
+
+
+        <h2>Medical Records</h2>
+        <% if (medicalRecords && medicalRecords.length> 0) { %>
+            <% medicalRecords.forEach(function(record) { %>
+                <div class="record-card">
+                    <div class="record-details">
+                        <span class="label">Patient Email:</span>
+                        <span>
+                            <%= record.email %>
+                        </span>
                     </div>
-                <% } %>
-            </div>
-        <% } else { %>
-            <h1>Currently there are no meetings Scheduled.</h1>
-        <% } %>
-    </form>
-    
-    
-    <script>
-        
-        console.log("Doctor dashboard loaded.");
-    </script>
+                    <div class="record-details">
+                        <span class="label">Blood Pressure:</span>
+                        <span>
+                            <%= record.bp %>
+                        </span>
+                    </div>
+                    <div class="record-details">
+                        <span class="label">Description:</span>
+                        <span>
+                            <%= record.description %>
+                        </span>
+                    </div>
+                </div>
+                <% }) %>
+                    <% } else { %>
+                        <p>No medical records found.</p>
+                        <% } %>
+
+                            <h2>Upcoming Meetings</h2>
+                            <% if (upcomingMeetings && upcomingMeetings.length> 0) { %>
+                                <% upcomingMeetings.forEach(function(meeting, index) { %>
+                                    <div class="meeting-card">
+                                        <div class="meeting-details">
+                                            <span class="label">Patient Name:</span>
+                                            <span>
+                                                <%= meeting.userNameOfPatient %>
+                                            </span>
+                                        </div>
+                                        <div class="meeting-details">
+                                            <span class="label">Email:</span>
+                                            <span>
+                                                <%= meeting.patinetEmail %>
+                                            </span>
+                                        </div>
+                                        <div class="meeting-details">
+                                            <span class="label">Date & Time:</span>
+                                            <span>
+                                                <%= meeting.dateTime %>
+                                            </span>
+                                        </div>
+                                        <div class="meeting-details">
+                                            <span class="label">Meeting Link:</span>
+                                            <a href="<%= meeting.meetingLink %>">
+                                                <%= meeting.meetingLink %>
+                                            </a>
+                                        </div>
+                                        <div class="actions">
+                                            <button onclick="openModal('<%= meeting._id %>')">Add Prescription</button>
+                                        </div>
+                                    </div>
+                                    <% }) %>
+                                        <% } else { %>
+                                            <h1>Currently there are no meetings Scheduled.</h1>
+                                            <% } %>
+
+                                                <!-- Modal for adding prescription -->
+                                                <div id="prescriptionModal" class="modal">
+                                                    <div class="modal-content">
+                                                        <span class="close" onclick="closeModal()">&times;</span>
+                                                        <h2>Add Prescription</h2>
+                                                        <form id="prescriptionForm">
+                                                            <input type="hidden" id="meetingId" name="meetingId">
+                                                            <label for="patientEmail">Patient Email:</label>
+                                                            <input type="text" id="patientEmail"
+                                                                name="patientEmail" required><br><br>
+                                                            <label for="doctorSignature">Doctor Signature:</label>
+                                                            <input type="text" id="doctorSignature"
+                                                                name="doctorSignature" required><br><br>
+                                                            <label for="prescription">Prescription:</label>
+                                                            <input type="text" id="prescription" name="prescription"
+                                                                required><br><br>
+                                                            <button type="submit">Done</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+
+                                                <script>
+                                                    function openModal(meetingId, patientEmail) {
+                                                        document.getElementById('meetingId').value = meetingId;
+                                                        document.getElementById('patientEmail').value = patientEmail;
+                                                        document.getElementById('prescriptionModal').style.display = 'block';
+                                                    }
+
+                                                    function closeModal() {
+                                                        document.getElementById('prescriptionModal').style.display = 'none';
+                                                    }
+
+                                                    document.getElementById('prescriptionForm').addEventListener('submit', function (event) {
+                                                        event.preventDefault();
+                                                        const meetingId = document.getElementById('meetingId').value;
+                                                        const doctorSignature = document.getElementById('doctorSignature').value;
+                                                        const prescription = document.getElementById('prescription').value;
+                                                        const patientEmail = document.getElementById('patientEmail').value;
+
+                                                        fetch('/add-prescription', {
+                                                            method: 'POST',
+                                                            headers: {
+                                                                'Content-Type': 'application/json'
+                                                            },
+                                                            body: JSON.stringify({
+                                                                meetingId,
+                                                                doctorSignature,
+                                                                prescription,
+                                                                patientEmail
+                                                            })
+                                                        }).then(response => {
+                                                            if (response.ok) {
+                                                                closeModal();
+                                                                alert('Prescription added successfully.');
+                                                            } else {
+                                                                alert('Failed to add prescription.');
+                                                            }
+                                                        }).catch(error => {
+                                                            console.error('Error:', error);
+                                                            alert('An error occurred. Please try again.');
+                                                        });
+                                                    });  
+                                                </script>
+    </div>
 </body>
+
 </html>
